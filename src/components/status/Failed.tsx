@@ -2,7 +2,9 @@ import React from 'react'
 
 const Failed = () => {
 	return (
-		<div className='flex items-center justify-center max-w-[100px] text-sm text-white p-[1px] px-2 bg-destructive rounded-[30px]'>Failed</div>
+		<span className='text-red-700 border border-red-700 rounded-full px-4 py-1	'>
+			Failed
+		</span>
 	)
 }
 

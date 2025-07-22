@@ -10,7 +10,7 @@ const searchBox = ({ placeholder }: { placeholder: string }) => {
 	let name = pathname.split('/').pop();
     name == 'dashboard'?name = 'appointments':name
 	return (
-		<div className='flex items-center gap-x-2 border border-gray-200 p-4 py-1 rounded-md w-md'>
+		<div className='flex items-center gap-x-2 border border-gray-200 p-4 py-1 rounded-md md:w-md w-[92%] '>
 			<Search
 				size={24}
 				className={`${

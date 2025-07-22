@@ -3,6 +3,7 @@ import { LogOut, Bell, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
 	Sidebar,
@@ -19,6 +20,12 @@ import { HiOutlineCalendarDays } from 'react-icons/hi2';
 import Logo from '../Logo';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import {
+	MdOutlineDashboard,
+	MdOutlineMedicalServices,
+	MdOutlinePeople,
+} from 'react-icons/md';
+import { authService } from '@/services/auth';
 
 type MenuItem = {
 	title: string;
@@ -29,38 +36,24 @@ type MenuItem = {
 // Menu items.
 const items: MenuItem[] = [
 	{
-		title: 'Appointments',
+		title: 'Dashboard',
 		url: '/admin/dashboard',
-		icon: (
-			<HiOutlineCalendarDays
-				size={24}
-			
-			/>
-		),
+		icon: <MdOutlineDashboard size={24} />,
 	},
 	{
-		title: 'Payments',
-		url: '/admin/dashboard/payments',
-		icon: (
-			<Image
-				src={'/admin/icons/credit-card.svg'}
-				alt='inbox'
-				width={24}
-				height={24}
-			/>
-		),
+		title: 'Bookings',
+		url: '/admin/dashboard/bookings',
+		icon: <HiOutlineCalendarDays size={24} />,
 	},
 	{
-		title: 'Staff',
-		url: '/admin/dashboard/staff',
-		icon: (
-			<Image
-				src={'/admin/icons/user-group.svg'}
-				alt='inbox'
-				width={24}
-				height={24}
-			/>
-		),
+		title: 'Services',
+		url: '/admin/dashboard/services',
+		icon: <MdOutlineMedicalServices size={24} />,
+	},
+	{
+		title: 'Customers',
+		url: '/admin/dashboard/customers',
+		icon: <MdOutlinePeople size={24} />,
 	},
 	{
 		title: 'Analytics',
@@ -77,27 +70,24 @@ const items: MenuItem[] = [
 	{
 		title: 'Settings',
 		url: '/admin/dashboard/settings',
-		icon: (
-
-					<Settings
-						size={24}
-					/>
-				
-		),
+		icon: <Settings size={24} />,
 	},
 	{
 		title: 'Notifications',
 		url: '/admin/dashboard/notification',
-		icon: (
-			<Bell
-				size={24}
-			/>
-		),
+		icon: <Bell size={24} />,
 	},
 ];
 
 export function AppSidebar() {
 	const pathname = usePathname();
+	const router = useRouter();
+
+	const handleLogout = () => {
+		authService.logout();
+		router.push('/login');
+	};
+
 	return (
 		<Sidebar>
 			<SidebarContent className=' p-4 text-gray-700'>
@@ -123,7 +113,14 @@ export function AppSidebar() {
 												' flex items-center gap-x-2'
 											)}
 										>
-											<span className={cn('text-gray-400 hover:text-blue-700',pathname=== item.url? 'text-blue-700':'')}>
+											<span
+												className={cn(
+													'text-gray-400 hover:text-blue-700',
+													pathname === item.url
+														? 'text-blue-700'
+														: ''
+												)}
+											>
 												{item.icon}
 											</span>
 
@@ -135,16 +132,16 @@ export function AppSidebar() {
 						</SidebarGroupContent>
 					</div>
 					<SidebarFooter className=''>
-						<Link
-							href='/admin/logout'
-							className='flex items-center gap-x-2'
+						<button
+							onClick={handleLogout}
+							className='flex items-center gap-x-2 w-full p-2 rounded-md hover:bg-red-50 hover:text-red-700 transition-colors'
 						>
 							<LogOut
 								size={24}
 								className='text-gray-400'
 							/>
 							<span className='text-gray-700'>Logout</span>
-						</Link>
+						</button>
 					</SidebarFooter>
 				</SidebarGroup>
 			</SidebarContent>
